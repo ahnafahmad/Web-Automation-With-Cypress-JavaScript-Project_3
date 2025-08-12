@@ -15,3 +15,9 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+
+// logout
+afterEach(() => {
+    cy.logout();
+    cy.wait(1000);
+})

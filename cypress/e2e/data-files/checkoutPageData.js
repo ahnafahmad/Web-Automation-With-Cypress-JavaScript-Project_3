@@ -8,4 +8,10 @@ export const checkoutPageData = {
 export const CheckoutPageTitle = {
     checkOutTitle: "Checkout: Your Information",
     checkoutOverviewTitle: "Checkout: Overview",
+
+    totalPriceLabel: "Price Total",
+}
+
+export const CheckoutPageMessage = {
+    successfullMessage: "Thank you for your order!",
 }

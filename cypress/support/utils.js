@@ -1,27 +1,25 @@
-import { checkoutPageData, CheckoutPageTitle } from "../e2e/data-files/checkoutPageData";
-import { loginData, message, title } from "../e2e/data-files/loginPageData";
-import { productsPageData } from "../e2e/data-files/productsPageData";
+import { checkoutPageData, CheckoutPageMessage, CheckoutPageTitle } from "../e2e/data-files/checkoutPageData";
 import { checkoutPageElements } from "../e2e/element-files/checkoutPageElements";
 import { commonElements } from "../e2e/element-files/commonElements";
 import { loginElements } from "../e2e/element-files/loginPageElements";
 import { productsPageElements } from "../e2e/element-files/productPageElements";
 
 //Login Without Credentials Function
-export function loginWithoutCredentials() {
+export function loginWithoutCredentials(username, usernameValidationMessage, passwordValidationMessage, apptitle) {
 
     //Assert The Login Page Title
-    cy.get(loginElements.loginPageTitle).should('be.visible').contains(title.appTitle)
+    cy.get(loginElements.loginPageTitle).should('be.visible').contains(apptitle)
 
     //Required Messages Assertion for the username
     cy.get(loginElements.loginButton).should('be.visible').click()
-    cy.get(loginElements.errorMessage).should('be.visible').contains(message.usernameValidationMessage)
+    cy.get(loginElements.errorMessage).should('be.visible').contains(usernameValidationMessage)
     cy.wait(500)
 
-    cy.get(loginElements.userName).should('be.visible').type(loginData.correctUserName);
+    cy.get(loginElements.userName).should('be.visible').type(username);
 
     //Required Messages Assertion for the Password
     cy.get(loginElements.loginButton).should('be.visible').click()
-    cy.get(loginElements.errorMessage).should('be.visible').contains(message.passwordValidationMessage)
+    cy.get(loginElements.errorMessage).should('be.visible').contains(passwordValidationMessage)
     cy.wait(500)
 
     //Cancel the Required Message
@@ -71,7 +69,7 @@ export function addToCart(quantity) {
     }
 }
 //Remove The Product From The Cart Function
-export function removeProductFromCart(firstItemPriceElement, secondItemPriceElement) {
+export function removeProductFromCart() {
     cy.get(productsPageElements.cartButton).should('be.visible').click();
     cy.wait(2000)
 
@@ -90,30 +88,36 @@ export function removeProductFromCart(firstItemPriceElement, secondItemPriceElem
 }
 
 //Proceed to Checkout
-export function proceedToCheckout() {
+export function proceedToCheckout(firstName, lastName, postalCode, checkoutPageTitle, checkoutOverviewTitle, totalPriceLabel) {
     cy.get(productsPageElements.checkoutButton).should('be.visible').click();
 
     //Assert The Checkout Page Title
-    cy.get(commonElements.title).should('be.visible').contains(CheckoutPageTitle.checkOutTitle);
+    cy.get(commonElements.title).should('be.visible').contains(checkoutPageTitle);
 
     //Fill up all the Field's Information
-    cy.get(checkoutPageElements.firstName).should('be.visible').type(checkoutPageData.firstName);
-    cy.get(checkoutPageElements.lastName).should('be.visible').type(checkoutPageData.lastName);
-    cy.get(checkoutPageElements.postalCode).should('be.visible').type(checkoutPageData.postalCode);
+    cy.get(checkoutPageElements.firstName).should('be.visible').type(firstName);
+    cy.get(checkoutPageElements.lastName).should('be.visible').type(lastName);
+    cy.get(checkoutPageElements.postalCode).should('be.visible').type(postalCode);
 
     cy.get(checkoutPageElements.continueButton).should('be.visible').click();
 
-    cy.get(commonElements.title).should('be.visible').contains(CheckoutPageTitle.checkoutOverviewTitle);
+    cy.get(commonElements.title).should('be.visible').contains(checkoutOverviewTitle);
 
-    const firstItemPrice = Number(Cypress.env("firstItemPrice"));
-    const secondItemPrice = Number(Cypress.env("secondItemPrice"));
+    const firstItemPrice = Cypress.env("firstItemPrice");
+    const secondItemPrice = Cypress.env("secondItemPrice");
 
     const itemTotal = firstItemPrice + secondItemPrice;
     const tax = +(itemTotal * 0.08).toFixed(2);
     const grandTotal = +(itemTotal + tax).toFixed(2);
 
+    cy.get(checkoutPageElements.totalPriceLabel).should('be.visible').contains(totalPriceLabel);
     cy.get(checkoutPageElements.itemTotalPrice).should('contain', itemTotal.toFixed(2));
     cy.get(checkoutPageElements.itemTax).should('contain', tax.toFixed(2));
     cy.get(checkoutPageElements.grandTotalPrice).should('contain', grandTotal.toFixed(2));
+
+    cy.get(checkoutPageElements.finishButton).should('be.visible').click();
+
+    cy.get(checkoutPageElements.successfullMessage).should('be.visible').contains(CheckoutPageMessage.successfullMessage);
+    cy.get(checkoutPageElements.backHomeButton).should('be.visible').click();
 
 }

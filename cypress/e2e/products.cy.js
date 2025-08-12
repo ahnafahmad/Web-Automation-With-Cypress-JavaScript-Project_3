@@ -1,4 +1,5 @@
 import { addToCart, loginWithCredentials, proceedToCheckout, removeProductFromCart, sortingTheProduct } from "../support/utils";
+import { checkoutPageData, CheckoutPageTitle } from "./data-files/checkoutPageData";
 import { loginData, paths } from "./data-files/loginPageData";
 import { productsPageData } from "./data-files/productsPageData";
 import { productsPageElements } from "./element-files/productPageElements";
@@ -20,16 +21,17 @@ describe('Products Page\'s Features Testing', () => {
         sortingTheProduct(productsPageElements.itemPrice, productsPageData.secondSortingCategory);
     })
 
-    it.only('Add, Remove, Checkout Feature Testing', () => {
+    it('Add, Remove, Checkout Feature Testing', () => {
 
         //Add Product To The Cart
         addToCart(productsPageData.productQuantity);
         cy.wait(1000)
 
         //Remove Product From The Cart
-        removeProductFromCart();
+        removeProductFromCart().then(() => {
 
-        //Proceed to Checkout 
-        proceedToCheckout()
+            //Proceed to Checkout 
+            proceedToCheckout(checkoutPageData.firstName, checkoutPageData.lastName, checkoutPageData.postalCode, CheckoutPageTitle.checkOutTitle, CheckoutPageTitle.checkoutOverviewTitle, CheckoutPageTitle.totalPriceLabel);
+        });
     })
 })

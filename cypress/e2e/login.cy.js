@@ -1,5 +1,6 @@
 import { loginWithCredentials, loginWithoutCredentials } from "../support/utils"
 import { loginData, message, paths, title } from "./data-files/loginPageData"
+import { commonElements } from "./element-files/commonElements"
 import { loginElements } from "./element-files/loginPageElements"
 
 describe('Login Feature Testing', () => {
@@ -11,7 +12,7 @@ describe('Login Feature Testing', () => {
     it('Login Without Any Credentials', () => {
 
         //Login Without Credentials
-        loginWithoutCredentials();
+        loginWithoutCredentials(loginData.correctUserName,message.usernameValidationMessage, message.passwordValidationMessage, title.appTitle);
 
     })
 
@@ -34,7 +35,7 @@ describe('Login Feature Testing', () => {
 
         //Assert The Product Page Title after Logged in
         cy.get(loginElements.appLogo).should('be.visible').contains(title.appTitle)
-        cy.get(loginElements.productsPageTitle).should('be.visible').contains(title.productsPageTitle)
+        cy.get(commonElements.title).should('be.visible').contains(title.productsPageTitle)
 
     })
 })

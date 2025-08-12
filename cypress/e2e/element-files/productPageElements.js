@@ -8,4 +8,6 @@ export const productsPageElements = {
     removeItemButton: '.btn.btn_secondary.btn_small.cart_button',
     checkoutButton: '#checkout',
 
+    menuButton: '#react-burger-menu-btn',
+    logoutButton: '#logout_sidebar_link',
 }

@@ -11,4 +11,5 @@ export const loginElements = {
     password: '#password',
 
     title: '.title'
+
 }
