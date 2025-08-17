@@ -23,7 +23,7 @@
  - Clone this project [Saucedemo-Web-Application-Automation-With-JavaScript-Cypress-Framwork](https://github.com/ahnafahmad/Web-Automation-With-Cypress-JavaScript-Project_3.git)
  - hit the following command:
   ```
- npx Cypress open\*
+ npx Cypress open
  ```
 
  ## Prerequisite
